@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Details</title>
+
+    <style>
+
+
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 40px;
+        }
+
+
+
+
+
+        .doctor-detail {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .doctor-detail img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .doctor-detail p {
+            text-align: left;
+            margin: 12px 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="doctor-detail">
+
+        {% if doctor.photo %}
+            <img src="{{ doctor.photo.url }}" alt="{{ doctor.name }}">
+        {% endif %}
+
+        <h1>{{ doctor.name }}</h1>
+
+        <p><strong>Category:</strong> {{ doctor.category.name }}</p>
+
+        <p><strong>Experience:</strong> {{ doctor.experience }} years</p>
+
+        <p><strong>Email:</strong> {{ doctor.email }}</p>
+
+        <p><strong>Phone:</strong> {{ doctor.phone }}</p>
+
+        <p><strong>About:</strong> {{ doctor.about }}</p>
+
+        <a class="back-link" href="{% url 'doctor_list' %}">
+            ← Back to Doctors
+        </a>
+
+    </div>
+
+</body>
+</html>

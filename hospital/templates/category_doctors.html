@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ category.name }} Doctors</title>
+</head>
+<body>
+
+<h1>{{ category.name }} Doctors</h1>
+
+{% for doctor in doctors %}
+
+    <div>
+        {% if doctor.photo %}
+            <img src="{{ doctor.photo.url }}" width="150" height="150">
+        {% endif %}
+
+        <h2>{{ doctor.name }}</h2>
+
+        <p>Experience: {{ doctor.experience }} years</p>
+        <p>Email: {{ doctor.email }}</p>
+        <p>Phone: {{ doctor.phone }}</p>
+
+        <a href="{% url 'doctor_detail' doctor.id %}">
+            View Doctor
+        </a>
+
+        <a href="{% url 'book_appointment' doctor.id %}">
+    Book Appointment
+</a>
+    </div>
+
+    <hr>
+
+{% empty %}
+
+    <p>No doctors available in this category.</p>
+
+{% endfor %}
+
+<a href="{% url 'category_list' %}">Back to Categories</a>
+
+</body>
+</html>
