@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Prescriptions</title>
+</head>
+<body>
+    <h2>My Prescriptions</h2>
+
+    {% for prescription in prescriptions %}
+        <p>Medicine: {{ prescription.medicine }}</p>
+        <p>Dosage: {{ prescription.dosage }}</p>
+        <p>Notes: {{ prescription.notes }}</p>
+        <p>Follow-up Date: {{ prescription.follow_up_date }}</p>
+        <hr>
+    {% empty %}
+        <p>No prescriptions available.</p>
+    {% endfor %}
+</body>
+</html>

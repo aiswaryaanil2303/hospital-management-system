@@ -1,0 +1,17 @@
+<h2>My Appointments</h2>
+
+{% for appointment in appointments %}
+    <p>
+        Patient: {{ appointment.patient.name }}<br>
+        Date: {{ appointment.date }}<br>
+        Time: {{ appointment.time }}<br>
+        Status: {{ appointment.status }}<br>
+
+        <a href="{% url 'add_prescription' appointment.id %}">
+            Add Prescription
+        </a>
+    </p>
+    <hr>
+{% empty %}
+    <p>No appointments available.</p>
+{% endfor %}

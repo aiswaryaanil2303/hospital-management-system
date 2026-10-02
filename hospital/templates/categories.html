@@ -3,8 +3,21 @@
 <head>
     <title>Categories</title>
 </head>
-<body>
+<style>
+    body {
+        background: url("/static/images/patientlogin.png") center/cover fixed;
+        font-family: Arial, sans-serif;
+    }
 
+    .category-card {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        margin: 15px;
+    }
+</style>
+<body>
+   
 <h1>Medical Categories</h1>
 
 {% for category in categories %}

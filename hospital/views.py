@@ -1,6 +1,19 @@
+import random
+from datetime import timedelta
 
-from django.shortcuts import render
-from .models import Doctor,Category,DoctorAvailability,Patient,Appointment
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
+from django.core.mail import send_mail
+from django.contrib import messages
+
+from .models import (
+    Doctor,
+    Category,
+    DoctorAvailability,
+    Patient,
+    Appointment,
+    Prescription,
+)
 
 # Create your views here.
 
@@ -62,7 +75,10 @@ def book_appointment(request, doctor_id):
             date=availability.date,
             time=availability.start_time,
             reason=reason
-        )
+            )
+        availability.is_available = False
+        availability.save()
+                
 
     return render(request, "book_appointment.html", {
         "doctor": doctor,
@@ -78,3 +94,121 @@ def appointment_list(request):
     return render(request, "appointment_list.html", {
         "appointments": appointments
     })
+
+
+# -----get the objects if get otherwise error ////////
+
+def doctor_dashboard(request, doctor_id):
+    doctor = get_object_or_404(Doctor, id=doctor_id)
+
+    appointments = Appointment.objects.filter(
+        doctor=doctor
+    ).order_by("date", "time")
+
+    return render(request, "doctor_dashboard.html", {
+        "doctor": doctor,
+        "appointments": appointments,
+    })
+
+# ////////// for add prescription/////------
+
+
+def add_prescription(request, appointment_id):
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+
+    if request.method == "POST":
+        medicine = request.POST.get("medicine")
+        dosage = request.POST.get("dosage")
+        notes = request.POST.get("notes")
+        follow_up_date = request.POST.get("follow_up_date") or None
+
+        prescription = Prescription(
+            appointment=appointment,
+            medicine=medicine,
+            dosage=dosage,
+            notes=notes,
+            follow_up_date=follow_up_date
+        )
+        prescription.save()
+
+    return render(request, "prescription_add.html", {
+        "appointment": appointment
+    })
+
+
+    # ///////# display to patient/////////////
+
+
+def view_prescriptions(request, patient_id):
+    patient = get_object_or_404(Patient, id=patient_id)
+
+    prescriptions = Prescription.objects.filter(
+        appointment__patient=patient
+    )
+
+    return render(request, "prescriptions.html", {
+        "prescriptions": prescriptions
+    })
+
+
+
+
+def patient_login(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+
+        try:
+            patient = Patient.objects.get(email=email, is_active=True)
+
+            otp = str(random.randint(100000, 999999))
+
+            patient.otp = otp
+            patient.otp_created_at = timezone.now()
+            patient.save()
+
+            send_mail(
+                "Hospital OTP",
+                "Your OTP is " + otp,
+                None,
+                [email],
+                fail_silently=False,
+            )
+
+            request.session["patient_email"] = email
+            return redirect("verify_otp")
+
+        except Patient.DoesNotExist:
+            messages.error(request, "Patient not found.")
+
+    return render(request, "patient_login.html")
+
+
+def verify_otp(request):
+    if request.method == "POST":
+        email = request.session.get("patient_email")
+        otp = request.POST.get("otp")
+
+        try:
+            patient = Patient.objects.get(email=email)
+
+            if (
+                patient.otp == otp
+                and patient.otp_created_at
+                and timezone.now() - patient.otp_created_at
+                < timedelta(minutes=5)
+            ):
+                patient.otp = None
+                patient.otp_created_at = None
+                patient.save()
+
+                request.session["patient_id"] = patient.id
+                return redirect("home")
+
+            else:
+                messages.error(request, "Invalid or expired OTP.")
+
+        except Patient.DoesNotExist:
+            messages.error(request, "Patient not found.")
+
+    return render(request, "verify_otp.html")
+
