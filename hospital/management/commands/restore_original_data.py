@@ -5,9 +5,19 @@ from hospital.models import Category, Doctor, Patient, DoctorAvailability, Appoi
 
 
 class Command(BaseCommand):
-    help = "Safely restores the original hospital data from original_hospital_backup.json after creating a pre-restore backup."
+    help = "Safely restores the original hospital data from original_hospital_backup.json if modified/dummy data is detected."
 
     def handle(self, *args, **options):
+        has_dummy_doctors = Doctor.objects.filter(
+            email__in=["dr.aiswarya@hospital.com", "dr.smith@hospital.com"]
+        ).exists()
+
+        if not has_dummy_doctors and Doctor.objects.filter(email="solly123@gmail.com").exists():
+            self.stdout.write(self.style.SUCCESS("Original doctor data is already active and intact. No changes needed."))
+            return
+
+        self.stdout.write("Modified doctor data detected on Render. Restoring original doctor data...")
+
         self.stdout.write("Step 1: Creating backup of current database state...")
         backup_file = "pre_restore_backup.json"
         try:
