@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-ck&$4w(1lxmn_7jc*xl)hu91sw0_&g%e^!y0tnd_z91($8im%8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["hospital-management-system-133n.onrender.com"]
 
 
 # Application definition
@@ -79,16 +79,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'hospital_management',
-#         'USER': 'postgres',
-#         'PASSWORD': '2003',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
+
 
 DATABASES = {
     "default": dj_database_url.config(
