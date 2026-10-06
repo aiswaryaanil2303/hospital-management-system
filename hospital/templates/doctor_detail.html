@@ -72,6 +72,12 @@
 
         <p><strong>About:</strong> {{ doctor.about }}</p>
 
+        <div style="margin-top: 20px;">
+            <a style="display: inline-block; background: #087fbd; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;" href="{% url 'book_appointment' doctor.id %}">
+                Book Appointment
+            </a>
+        </div>
+
         <a class="back-link" href="{% url 'doctor_list' %}">
             ← Back to Doctors
         </a>

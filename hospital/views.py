@@ -37,17 +37,18 @@ def category_list(request):
 
 
 def category_doctors(request, category_id):
-    category = Category.objects.get(id=category_id)
-    doctors = Doctor.objects.filter(category=category)
+    category = get_object_or_404(Category, id=category_id)
+    doctors = Doctor.objects.filter(category=category, is_active=True)
     return render(request, "category_doctors.html", {
-    "category": category,
-    "doctors": doctors
-})
+        "category": category,
+        "doctors": doctors
+    })
+
 
 # ///////
 
 def book_appointment(request, doctor_id):
-    doctor = Doctor.objects.get(id=doctor_id)
+    doctor = get_object_or_404(Doctor, id=doctor_id)
 
     availabilities = DoctorAvailability.objects.filter(
         doctor=doctor,
@@ -57,13 +58,14 @@ def book_appointment(request, doctor_id):
     patients = Patient.objects.filter(is_active=True)
 
     if request.method == "POST":
-        patient_id = request.POST["patient"]
-        availability_id = request.POST["availability"]
-        reason = request.POST["reason"]
+        patient_id = request.POST.get("patient")
+        availability_id = request.POST.get("availability")
+        reason = request.POST.get("reason", "")
 
-        patient = Patient.objects.get(id=patient_id)
+        patient = get_object_or_404(Patient, id=patient_id)
 
-        availability = DoctorAvailability.objects.get(
+        availability = get_object_or_404(
+            DoctorAvailability,
             id=availability_id,
             doctor=doctor,
             is_available=True
@@ -75,10 +77,11 @@ def book_appointment(request, doctor_id):
             date=availability.date,
             time=availability.start_time,
             reason=reason
-            )
+        )
         availability.is_available = False
         availability.save()
-                
+        messages.success(request, f"Appointment booked successfully with {doctor.name}!")
+        return redirect("appointment_list")
 
     return render(request, "book_appointment.html", {
         "doctor": doctor,
@@ -155,7 +158,7 @@ def view_prescriptions(request, patient_id):
 
 def patient_login(request):
     if request.method == "POST":
-        email = request.POST.get("email")
+        email = request.POST.get("email", "").strip()
 
         try:
             patient = Patient.objects.get(email=email, is_active=True)
@@ -166,13 +169,16 @@ def patient_login(request):
             patient.otp_created_at = timezone.now()
             patient.save()
 
-            send_mail(
-                "Hospital OTP",
-                "Your OTP is " + otp,
-                None,
-                [email],
-                fail_silently=False,
-            )
+            try:
+                send_mail(
+                    "Hospital OTP",
+                    "Your OTP is " + otp,
+                    None,
+                    [email],
+                    fail_silently=True,
+                )
+            except Exception:
+                pass
 
             request.session["patient_email"] = email
             return redirect("verify_otp")
@@ -186,7 +192,7 @@ def patient_login(request):
 def verify_otp(request):
     if request.method == "POST":
         email = request.session.get("patient_email")
-        otp = request.POST.get("otp")
+        otp = request.POST.get("otp", "").strip()
 
         try:
             patient = Patient.objects.get(email=email)
