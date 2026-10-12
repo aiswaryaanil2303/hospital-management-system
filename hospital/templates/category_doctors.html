@@ -1,46 +1,292 @@
+
 {% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ category.name }} Doctors</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.name }} Doctors | Hospital Care</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef6fb;
+            color: #263746;
+        }
+
+        nav {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        }
+
+        .logo {
+            color: #087f8c;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: #087f8c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 20px 30px;
+        }
+
+        .hero h1 {
+            color: #164e70;
+            font-size: 32px;
+            margin: 0 0 12px;
+        }
+
+        .hero p {
+            color: #647f96;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .doctor-list {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 10px auto 40px;
+            padding: 0 25px;
+        }
+
+        .doctor-card {
+            background: white;
+            padding: 22px;
+            border: 1px solid #dcebf4;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(35, 90, 120, 0.06);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(35, 90, 120, 0.12);
+        }
+
+        .doctor-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            object-position: top center;
+            border-radius: 8px;
+            background: #f1f5f9;
+            margin-bottom: 15px;
+        }
+
+        .doctor-card h2 {
+            color: #164e70;
+            font-size: 21px;
+            margin: 5px 0 10px;
+        }
+
+        .doctor-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 5px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .doctor-card .experience {
+            color: #087f8c;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 18px;
+        }
+
+        .button {
+            display: block;
+            padding: 12px;
+            background: #087f8c;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 7px;
+            transition: background 0.2s;
+        }
+
+        .button:hover {
+            background: #066873;
+        }
+
+        .button-secondary {
+            background: white;
+            color: #087f8c;
+            border: 1px solid #087f8c;
+        }
+
+        .button-secondary:hover {
+            background: #e5f6f7;
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .back-link {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 35px;
+            color: #087f8c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #647f96;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .doctor-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 16px 20px;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .hero h1 {
+                font-size: 27px;
+            }
+
+            .doctor-list {
+                grid-template-columns: 1fr;
+                padding: 0 18px;
+                gap: 18px;
+            }
+
+            .doctor-card img {
+                height: 250px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>{{ category.name }} Doctors</h1>
-
-{% for doctor in doctors %}
-
-    <div>
-        {% if doctor.photo %}
-            <img src="{{ doctor.photo.url }}" width="150" height="150">
-        {% else %}
-            <img src="{% static 'doctor-img1.jpg' %}" width="150" height="150">
-        {% endif %}
-
-        <h2>{{ doctor.name }}</h2>
-
-        <p>Experience: {{ doctor.experience }} years</p>
-        <p>Email: {{ doctor.email }}</p>
-        <p>Phone: {{ doctor.phone }}</p>
-
-        <a href="{% url 'doctor_detail' doctor.id %}">
-            View Doctor
+    <nav>
+        <a href="{% url 'doctor_list' %}" class="logo">
+            + Hospital Care
         </a>
 
-        <a href="{% url 'book_appointment' doctor.id %}">
-    Book Appointment
-</a>
+        <a href="{% url 'category_list' %}" class="nav-link">
+            All Categories
+        </a>
+    </nav>
+
+    <section class="hero">
+        <h1>{{ category.name }} Doctors</h1>
+        <p>
+            Find experienced doctors in the {{ category.name }} department.
+            <br>
+            Choose a doctor to view their details or book an appointment.
+        </p>
+    </section>
+
+    <div class="doctor-list">
+
+        {% for doctor in doctors %}
+
+            <div class="doctor-card">
+
+                {% if doctor.photo %}
+                    <img src="{{ doctor.photo.url }}"
+                         alt="{{ doctor.name }}">
+                {% else %}
+                    <img src="{% static 'images/indian-male-doctor-25181027.webp' %}"
+                         alt="{{ doctor.name }}">
+                {% endif %}
+
+                <h2>{{ doctor.name }}</h2>
+
+                <p class="experience">
+                    Experience: {{ doctor.experience }} years
+                </p>
+
+                <p>Email: {{ doctor.email }}</p>
+
+                <p>Phone: {{ doctor.phone }}</p>
+
+                <div class="actions">
+                    <a href="{% url 'doctor_detail' doctor.id %}"
+                       class="button button-secondary">
+                        View Doctor
+                    </a>
+
+                    <a href="{% url 'book_appointment' doctor.id %}"
+                       class="button">
+                        Book Appointment
+                    </a>
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <p class="empty-message">
+                No doctors available in this category.
+            </p>
+
+        {% endfor %}
+
     </div>
 
-    <hr>
+    <a href="{% url 'category_list' %}" class="back-link">
+        &larr; Back to Categories
+    </a>
 
-{% empty %}
-
-    <p>No doctors available in this category.</p>
-
-{% endfor %}
-
-<a href="{% url 'category_list' %}">Back to Categories</a>
+    <footer>
+        Your Health &nbsp; • &nbsp; Our Priority
+    </footer>
 
 </body>
 </html>

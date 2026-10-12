@@ -5,144 +5,157 @@
 <head>
     <title>Hospital Management System</title>
 
-        <style>
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-           body {
-            min-height: 100vh;
-            background-image: url("{% static 'images/hospital img.jpg' %}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+        body {
             font-family: Arial, sans-serif;
+            color: #123456;
         }
 
         nav {
-            position: relative;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
-            padding: 25px 40px;
-            background: rgba(0, 30, 60, 0.65);
+            padding: 20px 6%;
+            background: white;
+            box-shadow: 0 2px 5px #ddd;
         }
 
         .nav-title {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
+            color: #087e83;
             font-size: 25px;
             font-weight: bold;
-            white-space: nowrap;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-
-        nav a {
-            color: white;
+        .nav-links a {
+            color: #123456;
             text-decoration: none;
-            font-size: 17px;
-            font-weight: bold;
+            margin-left: 20px;
         }
 
-        nav a:hover {
-            color: #7dd3fc;
+        .nav-links a:hover {
+            color: #087e83;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            min-height: 550px;
+            padding-left: 6%;
         }
 
         .content {
-            padding: 70px 40px;
-            color: white;
-            text-shadow: 1px 1px 4px black;
+            width: 45%;
+            padding-right: 30px;
         }
 
         .content h1 {
-            font-size: 38px;
-            margin-bottom: 15px;
+            font-size: 45px;
+            margin-bottom: 20px;
         }
 
         .content p {
-            font-size: 20px;
+            color: #666;
+            font-size: 18px;
+            line-height: 1.7;
         }
 
-        .content h2 {
-            margin-top: 20px;
-        }
-
-        .content h2 a {
+        .button {
+            display: inline-block;
+            background: #087e83;
             color: white;
+            padding: 14px 25px;
+            margin-top: 25px;
+            border-radius: 30px;
             text-decoration: none;
         }
 
-        .content h2 a:hover {
-            color: #7dd3fc;
+        .button:hover {
+            background: #065f63;
+        }
+
+        .hero img {
+            width: 55%;
+            height: 550px;
+            object-fit: cover;
+            border-radius: 40px 0 0 0;
         }
 
         @media (max-width: 700px) {
             nav {
                 flex-direction: column;
-                gap: 20px;
-                padding: 20px 10px;
-            }
-
-            .nav-title {
-                position: static;
-                transform: none;
-                font-size: 20px;
-                white-space: normal;
-                text-align: center;
-            }
-
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
                 gap: 15px;
             }
 
+            .nav-links {
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: inline-block;
+                margin: 8px;
+            }
+
+            .hero {
+                flex-direction: column;
+                padding: 30px 20px;
+            }
+
             .content {
-                padding: 45px 20px;
+                width: 100%;
+                padding: 20px 0;
             }
 
             .content h1 {
-                font-size: 30px;
+                font-size: 32px;
             }
-    }
 
-
-
+            .hero img {
+                width: 100%;
+                height: 300px;
+                border-radius: 20px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <nav>
-        <div class="nav-title">Hospital Management System</div>
+        <div class="nav-title">Hospital Care</div>
 
         <div class="nav-links">
-
             <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'category_list' %}">Patient</a>
-            <a href="{% url 'doctor_list' %}">Doctor</a>
+            <a href="{% url 'category_list' %}">Departments</a>
+            <a href="{% url 'doctor_list' %}">Doctors</a>
             <a href="/admin/">Admin</a>
         </div>
     </nav>
 
-    <div class="content">
+    <div class="hero">
 
+        <div class="content">
+            <h1>Quality Healthcare for Everyone</h1>
 
-        <h1>Welcome to Our Hospital</h1>
-        <p>Your health, our priority.</p>
+            <p>
+                Find doctors and explore available
+                appointments with ease.
+            </p>
 
-        <h2><a href="{% url 'category_list' %}">Patient</a></h2>
-        <h2><a href="{% url 'doctor_list' %}">Doctor</a></h2>
-        <h2><a href="/admin/">Admin</a></h2>
+            <a href="{% url 'doctor_list' %}" class="button">
+                View Doctors &rarr;
+            </a>
+        </div>
+
+        <img src="{% static 'images/hero-alt-2.jpg' %}"
+     alt="Hospital">
     </div>
 
 </body>
 </html>
+```

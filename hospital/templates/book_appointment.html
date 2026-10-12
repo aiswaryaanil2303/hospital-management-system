@@ -1,63 +1,214 @@
-<h3>Available Dates & Times</h3>
 
-{% for availability in availabilities %}
+{% load static %}
 
-    <p>
-        Date: {{ availability.date }}
-        <br>
-        Time: {{ availability.start_time }} - {{ availability.end_time }}
-    </p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
 
-{% empty %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    <p>No available dates for this doctor.</p>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #eef6fb;
+            color: #263746;
+        }
 
-{% endfor %}
+        nav {
+            background-color: white;
+            padding: 18px 8%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
 
+        nav a {
+            color: #087f8c;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
 
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
 
+        .card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
 
-<h3>Book Appointment</h3>
+        h2 {
+            color: #087f8c;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
 
+        .availability {
+            background-color: #f0f9fa;
+            border-left: 4px solid #087f8c;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            line-height: 1.7;
+        }
 
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
 
-<form method="post">
-    {% csrf_token %}
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccd9e0;
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: #fff;
+        }
 
-    <label>Patient:</label>
-    <select name="patient" required>
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
 
-        <option value="">Select Patient</option>
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #087f8c;
+        }
 
-        {% for patient in patients %}
-            <option value="{{ patient.id }}">{{ patient.name }}</option>
-        {% endfor %}
-    </select>
+        button {
+            width: 100%;
+            padding: 13px;
+            background-color: #087f8c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-    <br><br>
+        button:hover {
+            background-color: #066873;
+        }
 
-    <label>Available Date & Time:</label>
-    <select name="availability" required>
-        <option value="">Select Date & Time</option>
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #087f8c;
+            text-decoration: none;
+        }
 
-        {% for availability in availabilities %}
-        
-            <option value="{{ availability.id }}">
+        .back-link:hover {
+            text-decoration: underline;
+        }
 
-                {{ availability.date }} -
+        .empty-message {
+            color: #64748b;
+            text-align: center;
+        }
 
-                {{ availability.start_time }} to {{ availability.end_time }}
-            </option>
-        {% endfor %}
-    </select>
+        @media (max-width: 600px) {
+            .container {
+                margin: 25px auto;
+            }
 
-    <br><br>
+            .card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
 
-    <label>Reason:</label>
-    <br>
-    <textarea name="reason" required></textarea>
+<body>
 
-    <br><br>
+    <nav>
+        <a href="{% url 'doctor_list' %}">Hospital Management System</a>
+    </nav>
 
-    <button type="submit">Book Appointment</button>
-</form>
+    <div class="container">
+
+        <div class="card">
+            <h2>Available Dates &amp; Times</h2>
+
+            {% for availability in availabilities %}
+                <div class="availability">
+                    <strong>Date:</strong> {{ availability.date }}
+                    <br>
+                    <strong>Time:</strong>
+                    {{ availability.start_time }} - {{ availability.end_time }}
+                </div>
+            {% empty %}
+                <p class="empty-message">
+                    No available dates for this doctor.
+                </p>
+            {% endfor %}
+        </div>
+
+        <div class="card">
+            <h2>Book Appointment</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <label for="patient">Patient:</label>
+                <select name="patient" id="patient" required>
+                    <option value="">Select Patient</option>
+
+                    {% for patient in patients %}
+                        <option value="{{ patient.id }}">
+                            {{ patient.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <label for="availability">Available Date &amp; Time:</label>
+                <select name="availability" id="availability" required>
+                    <option value="">Select Date &amp; Time</option>
+
+                    {% for availability in availabilities %}
+                        <option value="{{ availability.id }}">
+                            {{ availability.date }} -
+                            {{ availability.start_time }} to
+                            {{ availability.end_time }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <label for="reason">Reason for Appointment:</label>
+                <textarea
+                    name="reason"
+                    id="reason"
+                    placeholder="Enter the reason for your appointment"
+                    required
+                ></textarea>
+
+                <button type="submit">Book Appointment</button>
+            </form>
+
+            <a href="{% url 'doctor_list' %}" class="back-link">
+                &larr; Back to Doctors
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
+```

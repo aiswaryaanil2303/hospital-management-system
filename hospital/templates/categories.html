@@ -1,38 +1,160 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Categories</title>
+    <title>Medical Categories</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef6fc;
+            color: #123456;
+        }
+
+        nav {
+            background: white;
+            padding: 20px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px #ddd;
+        }
+
+        nav h2 {
+            color: #087e83;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #123456;
+            margin-left: 20px;
+        }
+
+        nav a:hover {
+            color: #087e83;
+        }
+
+        .heading {
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        .heading h1 {
+            color: #087e83;
+            margin-bottom: 10px;
+        }
+
+        .heading p {
+            color: #666;
+        }
+
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .category-card {
+            width: 250px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .category-card h2 {
+            margin-top: 0;
+        }
+
+        .category-card a {
+            color: #087e83;
+            text-decoration: none;
+        }
+
+        .category-card a:hover {
+            text-decoration: underline;
+        }
+
+        .category-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 8px;
+            }
+
+            .category-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
 </head>
-<style>
-    body {
-        background: url("{% static 'images/patientlogin.png' %}") center/cover fixed;
-        font-family: Arial, sans-serif;
-    }
 
-    .category-card {
-        background: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        border-radius: 10px;
-        margin: 15px;
-    }
-</style>
 <body>
-   
-<h1>Medical Categories</h1>
 
-{% for category in categories %}
-    <div>
-        <h2>
-            <a href="{% url 'category_doctors' category.id %}">
-        {{ category.name }}
-    </a>
-        </h2>
-        <p>{{ category.description }}</p>
+    <nav>
+        <h2>Hospital Care</h2>
+
+        <div>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'doctor_list' %}">Doctors</a>
+            <a href="{% url 'category_list' %}">Departments</a>
+            <a href="{% url 'patient_login' %}">Patient Login</a>
+        </div>
+    </nav>
+
+    <div class="heading">
+        <h1>Our Medical Departments</h1>
+        <p>Choose a department to find the right doctor for you.</p>
     </div>
-{% empty %}
-    <p>No categories available.</p>
-{% endfor %}
+
+    <div class="category-list">
+
+        {% for category in categories %}
+            <div class="category-card">
+
+                <h2>
+                    <a href="{% url 'category_doctors' category.id %}">
+                        {{ category.name }}
+                    </a>
+                </h2>
+
+                <p>{{ category.description }}</p>
+
+                <a href="{% url 'category_doctors' category.id %}">
+                    View Doctors &rarr;
+                </a>
+
+            </div>
+        {% empty %}
+            <p>No categories available.</p>
+        {% endfor %}
+
+    </div>
+
+    <footer>
+        <p>Hospital Management System</p>
+    </footer>
 
 </body>
 </html>
+```

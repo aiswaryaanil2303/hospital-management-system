@@ -46,7 +46,6 @@ def category_doctors(request, category_id):
 
 
 # ///////
-
 def book_appointment(request, doctor_id):
     doctor = get_object_or_404(Doctor, id=doctor_id)
 
@@ -62,7 +61,11 @@ def book_appointment(request, doctor_id):
         availability_id = request.POST.get("availability")
         reason = request.POST.get("reason", "")
 
-        patient = get_object_or_404(Patient, id=patient_id)
+        patient = get_object_or_404(
+            Patient,
+            id=patient_id,
+            is_active=True
+        )
 
         availability = get_object_or_404(
             DoctorAvailability,
@@ -78,9 +81,15 @@ def book_appointment(request, doctor_id):
             time=availability.start_time,
             reason=reason
         )
+
         availability.is_available = False
         availability.save()
-        messages.success(request, f"Appointment booked successfully with {doctor.name}!")
+
+        messages.success(
+            request,
+            f"Appointment booked successfully with {doctor.name}!"
+        )
+
         return redirect("appointment_list")
 
     return render(request, "book_appointment.html", {
