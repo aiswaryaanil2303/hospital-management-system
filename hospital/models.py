@@ -1,6 +1,7 @@
 from django.db import models
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -12,8 +13,9 @@ class Category(models.Model):
 
 class Doctor(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True) 
     username = models.CharField(max_length=100, unique=True)
+    password = models.CharField(max_length=128, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     photo = models.ImageField(
         upload_to="doctors/", blank=True, null=True
