@@ -30,4 +30,7 @@ path(
 
 path("patient/login/", views.patient_login, name="patient_login"),
 path("patient/verify-otp/", views.verify_otp, name="verify_otp"),
+path("patient/logout/", views.patient_logout, name="patient_logout"),
+path("patient/login/", views.patient_login, name="patient_login"),
+path("patient/verify-otp/", views.verify_otp, name="verify_otp"),
 ] 
