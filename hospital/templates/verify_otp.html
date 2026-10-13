@@ -1,35 +1,207 @@
-{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP | Hospital</title>
+
     <style>
-    body {
-        background: url("{% static 'images/patientlogin.png' %}") center/cover fixed;
-        font-family: Arial, sans-serif;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .category-card {
-        background: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        border-radius: 10px;
-        margin: 15px;
-    }
-</style>
-    <title>Verify OTP</title>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f6fc;
+            color: #183153;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            background: white;
+            padding: 18px 7%;
+            box-shadow: 0 2px 12px rgba(20, 65, 110, 0.08);
+        }
+
+        nav a {
+            color: #1266d4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 35px 16px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            border: 1px solid #e3edf8;
+            box-shadow: 0 10px 30px rgba(20, 65, 110, 0.08);
+        }
+
+        .icon {
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e8f3ff;
+            color: #1266d4;
+            font-size: 32px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #16365c;
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .intro {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d5e1ef;
+            border-radius: 8px;
+            font-size: 18px;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1266d4;
+            box-shadow: 0 0 0 3px rgba(18, 102, 212, 0.12);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #1266d4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0c4fa9;
+        }
+
+        .messages {
+            margin-bottom: 18px;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            background: #fff4e5;
+            color: #865b15;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 22px;
+            color: #1266d4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #16365c;
+            color: #d9e5f3;
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h2>Verify OTP</h2>
+    <nav>
+        <a href="{% url 'home' %}">← Back to Home</a>
+    </nav>
 
-    {% for message in messages %}
-        <p>{{ message }}</p>
-    {% endfor %}
+    <main>
+        <section class="card">
+            <div class="icon">🔐</div>
 
-    <form method="POST">
-        {% csrf_token %}
-        <label>Enter OTP:</label>
-        <input type="text" name="otp" maxlength="6"
-               pattern="[0-9]{6}" required>
-        <button type="submit">Verify OTP</button>
-    </form>
+            <h1>Verify Your OTP</h1>
+            <p class="intro">
+                Enter the one-time password sent to your email address.
+            </p>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <label for="otp">One-Time Password</label>
+                <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    placeholder="Enter OTP"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    required
+                >
+
+                <button type="submit">Verify and Continue</button>
+            </form>
+
+            <a href="{% url 'patient_login' %}" class="back">
+                ← Back to Patient Login
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Hospital. All rights reserved.</p>
+    </footer>
 </body>
 </html>
+

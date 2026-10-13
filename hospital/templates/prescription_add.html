@@ -1,37 +1,164 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add Prescription</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Prescriptions | Hospital</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f6fc;
+            color: #183153;
+        }
+
+        header {
+            background: white;
+            padding: 20px 7%;
+            box-shadow: 0 2px 10px rgba(20, 65, 110, 0.08);
+        }
+
+        header a {
+            color: #1266d4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .prescription {
+            background: white;
+            border: 1px solid #e0eaf5;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 18px rgba(20, 65, 110, 0.05);
+        }
+
+        .prescription h2 {
+            font-size: 20px;
+            color: #1266d4;
+            margin-bottom: 18px;
+        }
+
+        .detail {
+            padding: 12px 0;
+            border-bottom: 1px solid #edf2f7;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .detail:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #38516e;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px 20px;
+            text-align: center;
+            border-radius: 14px;
+            color: #718096;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            color: #718096;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                margin: 28px auto;
+                padding: 0 14px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .prescription {
+                padding: 18px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <header>
+        <a href="{% url 'home' %}">← Back to Home</a>
+    </header>
 
-    <h2>Add Prescription</h2>
+    <main>
+        <h1>My Prescriptions</h1>
+        <p class="subtitle">
+            View the medicines and instructions provided by your doctor.
+        </p>
 
-    <p>Patient: {{ appointment.patient.name }}</p>
-    <p>Doctor: {{ appointment.doctor.name }}</p>
+        {% if prescriptions %}
+            {% for prescription in prescriptions %}
+                <section class="prescription">
+                    <h2>Prescription {{ forloop.counter }}</h2>
 
-    <form method="POST">
-        {% csrf_token %}
+                    <div class="detail">
+                        <span class="label">Medicine:</span>
+                        {{ prescription.medicine }}
+                    </div>
 
-        <label>Medicine:</label>
-        <input type="text" name="medicine" required>
-        <br><br>
+                    <div class="detail">
+                        <span class="label">Dosage:</span>
+                        {{ prescription.dosage }}
+                    </div>
 
-        <label>Dosage:</label>
-        <input type="text" name="dosage" required>
-        <br><br>
+                    <div class="detail">
+                        <span class="label">Notes:</span>
+                        {{ prescription.notes|default:"No additional notes" }}
+                    </div>
 
-        <label>Notes:</label>
-        <textarea name="notes"></textarea>
-        <br><br>
+                    <div class="detail">
+                        <span class="label">Follow-up Date:</span>
+                        {{ prescription.follow_up_date|default:"Not specified" }}
+                    </div>
+                </section>
+            {% endfor %}
+        {% else %}
+            <div class="empty">
+                <h2>No prescriptions available</h2>
+                <p>Your prescriptions will appear here after your doctor adds them.</p>
+            </div>
+        {% endif %}
+    </main>
 
-        <label>Follow-up Date:</label>
-        <input type="date" name="follow_up_date">
-        <br><br>
-
-        <button type="submit">Save Prescription</button>
-    </form>
-
+    <footer>
+        © 2026 Hospital. All rights reserved.
+    </footer>
 </body>
 </html>

@@ -1,9 +1,10 @@
 
-{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Hospital Management System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarePoint Hospital</title>
 
     <style>
         * {
@@ -14,111 +15,250 @@
 
         body {
             font-family: Arial, sans-serif;
-            color: #123456;
+            background: #f4f8fc;
+            color: #183153;
+            line-height: 1.6;
         }
 
         nav {
+            background: white;
+            padding: 18px 7%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 6%;
-            background: white;
-            box-shadow: 0 2px 5px #ddd;
+            gap: 20px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 12px rgba(20, 65, 110, 0.08);
         }
 
-        .nav-title {
-            color: #087e83;
-            font-size: 25px;
+        .logo {
+            color: #1266d4;
+            font-size: 24px;
             font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .nav-links a {
-            color: #123456;
+            color: #344a63;
             text-decoration: none;
-            margin-left: 20px;
+            font-size: 14px;
+            font-weight: 600;
         }
 
         .nav-links a:hover {
-            color: #087e83;
+            color: #1266d4;
         }
 
         .hero {
+            padding: 75px 7%;
+            background: linear-gradient(120deg, #e8f3ff, #ffffff);
             display: flex;
             align-items: center;
-            min-height: 550px;
-            padding-left: 6%;
+            justify-content: space-between;
+            gap: 40px;
         }
 
-        .content {
-            width: 45%;
-            padding-right: 30px;
+        .hero-content {
+            max-width: 620px;
         }
 
-        .content h1 {
-            font-size: 45px;
+        .tag {
+            display: inline-block;
+            background: #d9eaff;
+            color: #1266d4;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 52px);
+            line-height: 1.2;
             margin-bottom: 20px;
+            color: #16365c;
         }
 
-        .content p {
-            color: #666;
-            font-size: 18px;
-            line-height: 1.7;
+        .hero h1 span {
+            color: #1266d4;
+        }
+
+        .hero p {
+            color: #62748a;
+            font-size: 16px;
+            margin-bottom: 28px;
         }
 
         .button {
             display: inline-block;
-            background: #087e83;
-            color: white;
-            padding: 14px 25px;
-            margin-top: 25px;
-            border-radius: 30px;
+            padding: 12px 22px;
+            border-radius: 8px;
             text-decoration: none;
+            font-weight: bold;
+            margin: 5px 8px 5px 0;
         }
 
-        .button:hover {
-            background: #065f63;
+        .primary {
+            background: #1266d4;
+            color: white;
         }
 
-        .hero img {
-            width: 55%;
-            height: 550px;
-            object-fit: cover;
-            border-radius: 40px 0 0 0;
+        .primary:hover {
+            background: #0c4fa9;
         }
 
-        @media (max-width: 700px) {
+        .secondary {
+            background: white;
+            color: #1266d4;
+            border: 1px solid #c9def8;
+        }
+
+        .hero-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            min-width: 240px;
+            text-align: center;
+            box-shadow: 0 12px 35px rgba(24, 73, 125, 0.12);
+        }
+
+        .hero-icon {
+            font-size: 70px;
+            margin-bottom: 10px;
+        }
+
+        .hero-card h3 {
+            color: #1266d4;
+            margin-bottom: 8px;
+        }
+
+        .hero-card p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .section {
+            padding: 55px 7%;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #16365c;
+        }
+
+        .section-intro {
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 28px 22px;
+            border-radius: 14px;
+            border: 1px solid #e5edf6;
+            box-shadow: 0 5px 18px rgba(20, 65, 110, 0.04);
+            text-align: left;
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 8px;
+            color: #1c4777;
+        }
+
+        .feature-card p {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card a {
+            color: #1266d4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cta {
+            margin: 10px 7% 55px;
+            padding: 35px;
+            background: #1266d4;
+            color: white;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .cta h2 {
+            margin-bottom: 10px;
+        }
+
+        .cta p {
+            margin-bottom: 18px;
+        }
+
+        .cta .button {
+            background: white;
+            color: #1266d4;
+        }
+
+        footer {
+            background: #16365c;
+            color: #d9e5f3;
+            text-align: center;
+            padding: 22px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
             nav {
-                flex-direction: column;
-                gap: 15px;
+                padding: 16px 5%;
             }
 
             .nav-links {
-                text-align: center;
-            }
-
-            .nav-links a {
-                display: inline-block;
-                margin: 8px;
+                gap: 12px;
             }
 
             .hero {
+                padding: 45px 5%;
                 flex-direction: column;
-                padding: 30px 20px;
+                align-items: stretch;
             }
 
-            .content {
-                width: 100%;
-                padding: 20px 0;
+            .hero-card {
+                min-width: 0;
             }
 
-            .content h1 {
-                font-size: 32px;
+            .features {
+                grid-template-columns: 1fr;
             }
 
-            .hero img {
-                width: 100%;
-                height: 300px;
-                border-radius: 20px;
+            .section {
+                padding: 40px 5%;
+            }
+
+            .cta {
+                margin: 0 5% 35px;
+                padding: 28px 20px;
             }
         }
     </style>
@@ -127,35 +267,90 @@
 <body>
 
     <nav>
-        <div class="nav-title">Hospital Care</div>
+       
 
         <div class="nav-links">
             <a href="{% url 'home' %}">Home</a>
             <a href="{% url 'category_list' %}">Departments</a>
             <a href="{% url 'doctor_list' %}">Doctors</a>
-            <a href="/admin/">Admin</a>
+            <a href="{% url 'admin:index' %}">Admin</a>
+            <a href="{% url 'patient_login' %}">Patient Login</a>
+            <a href="{% url 'doctor_login' %}">Doctor Login</a>
         </div>
     </nav>
 
-    <div class="hero">
+    <section class="hero">
+        <div class="hero-content">
+            <span class="tag">YOUR HEALTH, OUR PRIORITY</span>
 
-        <div class="content">
-            <h1>Quality Healthcare for Everyone</h1>
+            <h1>
+                Better Care for a
+                <span>Healthier Life</span>
+            </h1>
 
             <p>
-                Find doctors and explore available
-                appointments with ease.
+                Find experienced doctors, explore medical departments,
+                and book your appointment with ease.
+                Your health deserves care you can trust.
             </p>
 
-            <a href="{% url 'doctor_list' %}" class="button">
-                View Doctors &rarr;
+            <a href="{% url 'doctor_list' %}" class="button primary">
+                Find a Doctor →
+            </a>
+
+            <a href="{% url 'category_list' %}" class="button secondary">
+                Explore Departments
             </a>
         </div>
 
-        <img src="{% static 'images/hero-alt-2.jpg' %}"
-     alt="Hospital">
-    </div>
+        <div class="hero-card">
+            <div class="hero-icon">🏥</div>
+            <h3>Care You Can Trust</h3>
+            <p>Quality healthcare with a patient-first approach.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Healthcare Made Simple</h2>
+        <p class="section-intro">
+            Everything you need to manage your hospital visits in one place.
+        </p>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🩺</div>
+                <h3>Experienced Doctors</h3>
+                <p>Explore doctor profiles and find the right specialist for your needs.</p>
+                <a href="{% url 'doctor_list' %}">View Doctors →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🧬</div>
+                <h3>Medical Departments</h3>
+                <p>Browse departments and discover doctors by their specialization.</p>
+                <a href="{% url 'category_list' %}">View Departments →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h3>Easy Appointments</h3>
+                <p>Choose a doctor and request an appointment using available dates.</p>
+                <a href="{% url 'doctor_list' %}">Book an Appointment →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Your Health Journey Starts Here</h2>
+        <p>Find a doctor and take the next step toward better health.</p>
+        <a href="{% url 'doctor_list' %}" class="button">
+            Get Started
+        </a>
+    </section>
+
+    <footer>
+        <p>© 2026 CarePoint Hospital. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
-```

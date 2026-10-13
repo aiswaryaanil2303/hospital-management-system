@@ -1,136 +1,224 @@
 
-{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Appointment</title>
+    <title>Book Appointment | Hospital</title>
 
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #eef6fb;
-            color: #263746;
+            background: #f4f8fc;
+            color: #183153;
+            line-height: 1.6;
         }
 
         nav {
-            background-color: white;
-            padding: 18px 8%;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            background: white;
+            padding: 18px 7%;
+            box-shadow: 0 2px 12px rgba(20, 65, 110, 0.08);
         }
 
         nav a {
-            color: #087f8c;
+            color: #1266d4;
             text-decoration: none;
-            font-size: 18px;
             font-weight: bold;
+            margin-right: 22px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #0c4fa9;
+        }
+
+        .page-header {
+            background: linear-gradient(120deg, #e5f1ff, #ffffff);
+            text-align: center;
+            padding: 42px 20px;
+        }
+
+        .page-header h1 {
+            color: #16365c;
+            font-size: clamp(28px, 4vw, 38px);
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #62748a;
         }
 
         .container {
-            max-width: 650px;
-            margin: 40px auto;
+            max-width: 760px;
+            margin: 35px auto 55px;
             padding: 0 20px;
         }
 
-        .card {
-            background-color: white;
+        .booking-card {
+            background: white;
+            border: 1px solid #e3edf8;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 28px rgba(20, 65, 110, 0.07);
+        }
+
+        .doctor-info {
+            background: #e8f3ff;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .doctor-icon {
+            width: 65px;
+            height: 65px;
+            flex-shrink: 0;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+        }
+
+        .doctor-info h2 {
+            color: #16365c;
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .doctor-info p {
+            color: #1266d4;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .form-content {
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-content h3 {
+            font-size: 21px;
+            color: #16365c;
+            margin-bottom: 6px;
+        }
+
+        .description {
+            color: #718096;
+            font-size: 14px;
             margin-bottom: 25px;
         }
 
-        h2 {
-            color: #087f8c;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
-
-        .availability {
-            background-color: #f0f9fa;
-            border-left: 4px solid #087f8c;
-            padding: 12px 15px;
-            margin-bottom: 12px;
-            border-radius: 5px;
-            line-height: 1.7;
+        .form-group {
+            margin-bottom: 21px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            color: #344a63;
+            font-size: 14px;
             font-weight: bold;
+            margin-bottom: 8px;
         }
 
         select,
         textarea {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ccd9e0;
-            border-radius: 6px;
-            font-size: 15px;
-            background-color: #fff;
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
+            padding: 13px 14px;
+            border: 1px solid #d5e1ef;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #183153;
+            background: #ffffff;
         }
 
         select:focus,
         textarea:focus {
             outline: none;
-            border-color: #087f8c;
+            border-color: #1266d4;
+            box-shadow: 0 0 0 3px rgba(18, 102, 212, 0.12);
         }
 
-        button {
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .help-text {
+            color: #718096;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .submit-button {
+            display: block;
             width: 100%;
-            padding: 13px;
-            background-color: #087f8c;
+            padding: 14px;
+            background: #1266d4;
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 8px;
         }
 
-        button:hover {
-            background-color: #066873;
+        .submit-button:hover {
+            background: #0c4fa9;
         }
 
         .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #087f8c;
+            display: inline-block;
+            margin-top: 22px;
+            color: #1266d4;
             text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        .empty-message {
-            color: #64748b;
+        footer {
+            background: #16365c;
+            color: #d9e5f3;
             text-align: center;
+            padding: 22px;
+            font-size: 13px;
         }
 
         @media (max-width: 600px) {
-            .container {
-                margin: 25px auto;
+            nav {
+                padding: 16px 5%;
             }
 
-            .card {
-                padding: 22px;
+            nav a {
+                display: inline-block;
+                margin: 4px 12px 4px 0;
+            }
+
+            .container {
+                margin: 25px auto 40px;
+                padding: 0 14px;
+            }
+
+            .form-content {
+                padding: 22px 18px;
+            }
+
+            .doctor-info {
+                padding: 20px 18px;
+            }
+
+            .doctor-info h2 {
+                font-size: 19px;
             }
         }
     </style>
@@ -139,76 +227,101 @@
 <body>
 
     <nav>
-        <a href="{% url 'doctor_list' %}">Hospital Management System</a>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'doctor_list' %}">Doctors</a>
+        <a href="{% url 'category_list' %}">Departments</a>
     </nav>
 
-    <div class="container">
+    <header class="page-header">
+        <h1>Book an Appointment</h1>
+        <p>Choose an available date and provide your appointment details.</p>
+    </header>
 
-        <div class="card">
-            <h2>Available Dates &amp; Times</h2>
+    <main class="container">
 
-            {% for availability in availabilities %}
-                <div class="availability">
-                    <strong>Date:</strong> {{ availability.date }}
-                    <br>
-                    <strong>Time:</strong>
-                    {{ availability.start_time }} - {{ availability.end_time }}
+        <section class="booking-card">
+
+            <div class="doctor-info">
+                <div class="doctor-icon">🩺</div>
+
+                <div>
+                    <h2>{{ doctor.name }}</h2>
+                    <p>{{ doctor.category.name }}</p>
+                    <p>{{ doctor.experience }} years of experience</p>
                 </div>
-            {% empty %}
-                <p class="empty-message">
-                    No available dates for this doctor.
+            </div>
+
+            <div class="form-content">
+                <h3>Appointment Details</h3>
+                <p class="description">
+                    Complete the form below to request your appointment.
                 </p>
-            {% endfor %}
-        </div>
 
-        <div class="card">
-            <h2>Book Appointment</h2>
+                <form method="POST">
+                    {% csrf_token %}
 
-            <form method="post">
-                {% csrf_token %}
+                    <div class="form-group">
+                        <label for="patient">Select Patient</label>
 
-                <label for="patient">Patient:</label>
-                <select name="patient" id="patient" required>
-                    <option value="">Select Patient</option>
+                        <select id="patient" name="patient" required>
+                            <option value="">Choose a patient</option>
 
-                    {% for patient in patients %}
-                        <option value="{{ patient.id }}">
-                            {{ patient.name }}
-                        </option>
-                    {% endfor %}
-                </select>
+                            {% for patient in patients %}
+                                <option value="{{ patient.id }}">
+                                    {{ patient.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                <label for="availability">Available Date &amp; Time:</label>
-                <select name="availability" id="availability" required>
-                    <option value="">Select Date &amp; Time</option>
+                    <div class="form-group">
+                        <label for="availability">Available Date and Time</label>
 
-                    {% for availability in availabilities %}
-                        <option value="{{ availability.id }}">
-                            {{ availability.date }} -
-                            {{ availability.start_time }} to
-                            {{ availability.end_time }}
-                        </option>
-                    {% endfor %}
-                </select>
+                        <select id="availability" name="availability" required>
+                            <option value="">Choose a date and time</option>
 
-                <label for="reason">Reason for Appointment:</label>
-                <textarea
-                    name="reason"
-                    id="reason"
-                    placeholder="Enter the reason for your appointment"
-                    required
-                ></textarea>
+                            {% for availability in availabilities %}
+                                <option value="{{ availability.id }}">
+                                    {{ availability.date|date:"d M Y" }}
+                                    — {{ availability.start_time|time:"g:i A" }}
+                                    to {{ availability.end_time|time:"g:i A" }}
+                                </option>
+                            {% endfor %}
+                        </select>
 
-                <button type="submit">Book Appointment</button>
-            </form>
+                        <p class="help-text">
+                            Only availability options supplied by the doctor are listed.
+                        </p>
+                    </div>
 
-            <a href="{% url 'doctor_list' %}" class="back-link">
-                &larr; Back to Doctors
-            </a>
-        </div>
+                    <div class="form-group">
+                        <label for="reason">Reason for Appointment</label>
 
-    </div>
+                        <textarea
+                            id="reason"
+                            name="reason"
+                            placeholder="Briefly describe the reason for your visit..."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-button">
+                        Confirm Appointment
+                    </button>
+                </form>
+            </div>
+
+        </section>
+
+        <a href="{% url 'doctor_detail' doctor.id %}" class="back-link">
+            ← Back to Doctor Profile
+        </a>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Hospital. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
-```

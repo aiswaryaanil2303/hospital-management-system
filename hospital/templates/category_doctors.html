@@ -1,23 +1,23 @@
 
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ category.name }} Doctors | Hospital Care</title>
+    <title>Department Doctors | Hospital</title>
 
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background: #eef6fb;
-            color: #263746;
+            background: #f4f8fc;
+            color: #183153;
+            line-height: 1.6;
         }
 
         nav {
@@ -26,186 +26,195 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            box-shadow: 0 2px 12px rgba(20, 65, 110, 0.08);
         }
 
-        .logo {
-            color: #087f8c;
-            font-size: 22px;
-            font-weight: bold;
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #344a63;
             text-decoration: none;
-        }
-
-        .nav-link {
-            color: #087f8c;
-            text-decoration: none;
+            font-size: 14px;
             font-weight: bold;
         }
 
-        .hero {
+        .nav-links a:hover {
+            color: #1266d4;
+        }
+
+        .header {
+            background: linear-gradient(120deg, #e5f1ff, #ffffff);
             text-align: center;
-            padding: 40px 20px 30px;
+            padding: 45px 20px;
         }
 
-        .hero h1 {
-            color: #164e70;
-            font-size: 32px;
-            margin: 0 0 12px;
+        .header h1 {
+            color: #16365c;
+            font-size: clamp(27px, 4vw, 38px);
+            margin-bottom: 10px;
         }
 
-        .hero p {
-            color: #647f96;
-            font-size: 16px;
-            line-height: 1.6;
+        .header p {
+            color: #62748a;
         }
 
-        .doctor-list {
+        .container {
+            max-width: 1150px;
+            margin: auto;
+            padding: 35px 25px 60px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #1266d4;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            margin-bottom: 24px;
+        }
+
+        .section-title h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .section-title p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .doctor-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 24px;
-            max-width: 1200px;
-            margin: 10px auto 40px;
-            padding: 0 25px;
+            gap: 22px;
         }
 
         .doctor-card {
             background: white;
-            padding: 22px;
-            border: 1px solid #dcebf4;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(35, 90, 120, 0.06);
-            display: flex;
-            flex-direction: column;
+            padding: 24px;
+            border: 1px solid #e3edf8;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(20, 65, 110, 0.05);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .doctor-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(35, 90, 120, 0.12);
+            box-shadow: 0 12px 25px rgba(20, 65, 110, 0.1);
         }
 
-        .doctor-card img {
-            width: 100%;
-            height: 220px;
+        .doctor-photo {
+            display: block;
+            width: 95px;
+            height: 95px;
             object-fit: cover;
-            object-position: top center;
-            border-radius: 8px;
-            background: #f1f5f9;
-            margin-bottom: 15px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            border: 4px solid #e8f3ff;
         }
 
-        .doctor-card h2 {
-            color: #164e70;
-            font-size: 21px;
-            margin: 5px 0 10px;
+        .placeholder {
+            width: 95px;
+            height: 95px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: #e8f3ff;
+            font-size: 36px;
         }
 
-        .doctor-card p {
-            color: #64748b;
+        .doctor-card h3 {
+            text-align: center;
+            color: #16365c;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .specialty {
+            text-align: center;
+            color: #1266d4;
+            font-weight: bold;
             font-size: 14px;
-            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .info {
+            background: #f5f9ff;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 18px;
+        }
+
+        .info p {
+            color: #53677f;
+            font-size: 14px;
             margin: 5px 0;
             overflow-wrap: anywhere;
         }
 
-        .doctor-card .experience {
-            color: #087f8c;
-            font-weight: bold;
-        }
-
-        .actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: auto;
-            padding-top: 18px;
-        }
-
         .button {
             display: block;
-            padding: 12px;
-            background: #087f8c;
-            color: white;
             text-align: center;
             text-decoration: none;
+            padding: 11px 15px;
+            border-radius: 8px;
+            background: #1266d4;
+            color: white;
             font-weight: bold;
             font-size: 14px;
-            border-radius: 7px;
-            transition: background 0.2s;
         }
 
         .button:hover {
-            background: #066873;
+            background: #0c4fa9;
         }
 
-        .button-secondary {
+        .empty-state {
             background: white;
-            color: #087f8c;
-            border: 1px solid #087f8c;
-        }
-
-        .button-secondary:hover {
-            background: #e5f6f7;
-        }
-
-        .empty-message {
-            grid-column: 1 / -1;
-            background: white;
-            border-radius: 10px;
+            border: 1px solid #e3edf8;
+            border-radius: 14px;
             padding: 30px;
             text-align: center;
-            color: #64748b;
-        }
-
-        .back-link {
-            display: block;
-            width: fit-content;
-            margin: 0 auto 35px;
-            color: #087f8c;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
+            color: #62748a;
         }
 
         footer {
+            background: #16365c;
+            color: #d9e5f3;
             text-align: center;
-            padding: 20px;
-            color: #647f96;
-            font-size: 14px;
+            padding: 22px;
+            font-size: 13px;
         }
 
-        @media (max-width: 900px) {
-            .doctor-list {
+        @media (max-width: 850px) {
+            .doctor-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 580px) {
             nav {
-                padding: 16px 20px;
+                padding: 16px 5%;
+            }
+
+            .nav-links {
                 gap: 12px;
-                flex-wrap: wrap;
             }
 
-            .logo {
-                font-size: 18px;
+            .container {
+                padding: 25px 16px 40px;
             }
 
-            .hero h1 {
-                font-size: 27px;
-            }
-
-            .doctor-list {
+            .doctor-grid {
                 grid-template-columns: 1fr;
-                padding: 0 18px;
-                gap: 18px;
-            }
-
-            .doctor-card img {
-                height: 250px;
             }
         }
     </style>
@@ -214,79 +223,88 @@
 <body>
 
     <nav>
-        <a href="{% url 'doctor_list' %}" class="logo">
-            + Hospital Care
-        </a>
-
-        <a href="{% url 'category_list' %}" class="nav-link">
-            All Categories
-        </a>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'category_list' %}">Departments</a>
+            <a href="{% url 'doctor_list' %}">All Doctors</a>
+            <a href="{% url 'patient_login' %}">Patient Login</a>
+        </div>
     </nav>
 
-    <section class="hero">
-        <h1>{{ category.name }} Doctors</h1>
+    <header class="header">
+        <h1>{{ category.name }}</h1>
         <p>
-            Find experienced doctors in the {{ category.name }} department.
-            <br>
-            Choose a doctor to view their details or book an appointment.
+            {{ category.description|default:"Meet our specialists in this department." }}
         </p>
-    </section>
+    </header>
 
-    <div class="doctor-list">
+    <main class="container">
 
-        {% for doctor in doctors %}
+        <a href="{% url 'category_list' %}" class="back-link">
+            ← Back to Departments
+        </a>
 
-            <div class="doctor-card">
+        <div class="section-title">
+            <h2>Our Specialists</h2>
+            <p>Doctors listed under this department.</p>
+        </div>
 
-                {% if doctor.photo %}
-                    <img src="{{ doctor.photo.url }}"
-                         alt="{{ doctor.name }}">
-                {% else %}
-                    <img src="{% static 'images/indian-male-doctor-25181027.webp' %}"
-                         alt="{{ doctor.name }}">
-                {% endif %}
+        {% if doctors %}
+            <div class="doctor-grid">
+                {% for doctor in doctors %}
+                    <article class="doctor-card">
 
-                <h2>{{ doctor.name }}</h2>
+                        {% if doctor.photo %}
+                            <img
+                                src="{{ doctor.photo.url }}"
+                                alt="{{ doctor.name }}"
+                                class="doctor-photo"
+                            >
+                        {% else %}
+                            <div class="placeholder">🩺</div>
+                        {% endif %}
 
-                <p class="experience">
-                    Experience: {{ doctor.experience }} years
-                </p>
+                        <h3>{{ doctor.name }}</h3>
 
-                <p>Email: {{ doctor.email }}</p>
+                        <p class="specialty">
+                            {{ doctor.category.name }}
+                        </p>
 
-                <p>Phone: {{ doctor.phone }}</p>
+                        <div class="info">
+                            <p>
+                                <strong>Experience:</strong>
+                                {{ doctor.experience }} years
+                            </p>
 
-                <div class="actions">
-                    <a href="{% url 'doctor_detail' doctor.id %}"
-                       class="button button-secondary">
-                        View Doctor
-                    </a>
+                            <p>
+                                <strong>Phone:</strong>
+                                {{ doctor.phone|default:"Not provided" }}
+                            </p>
+                        </div>
 
-                    <a href="{% url 'book_appointment' doctor.id %}"
-                       class="button">
-                        Book Appointment
-                    </a>
-                </div>
+                        <a
+                            href="{% url 'doctor_detail' doctor.id %}"
+                            class="button"
+                        >
+                            View Doctor Profile →
+                        </a>
 
+                    </article>
+                {% endfor %}
             </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>No doctors found</h3>
+                <p>There are currently no doctors listed in this department.</p>
+            </div>
+        {% endif %}
 
-        {% empty %}
-
-            <p class="empty-message">
-                No doctors available in this category.
-            </p>
-
-        {% endfor %}
-
-    </div>
-
-    <a href="{% url 'category_list' %}" class="back-link">
-        &larr; Back to Categories
-    </a>
+    </main>
 
     <footer>
-        Your Health &nbsp; • &nbsp; Our Priority
+        <p>© 2026 Hospital. All rights reserved.</p>
     </footer>
 
 </body>
 </html>
+

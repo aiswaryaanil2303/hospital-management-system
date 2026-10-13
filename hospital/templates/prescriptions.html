@@ -1,19 +1,286 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Prescriptions</title>
-</head>
-<body>
-    <h2>My Prescriptions</h2>
 
-    {% for prescription in prescriptions %}
-        <p>Medicine: {{ prescription.medicine }}</p>
-        <p>Dosage: {{ prescription.dosage }}</p>
-        <p>Notes: {{ prescription.notes }}</p>
-        <p>Follow-up Date: {{ prescription.follow_up_date }}</p>
-        <hr>
-    {% empty %}
-        <p>No prescriptions available.</p>
-    {% endfor %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Prescriptions | Hospital Care</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef6fb;
+            color: #263746;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 20px 6%;
+            background: white;
+            box-shadow: 0 2px 5px #ddd;
+        }
+
+        .logo {
+            color: #087e83;
+            font-size: 25px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #123456;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #087e83;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 45px auto;
+        }
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+        .page-heading h1 {
+            color: #164e70;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .page-heading p {
+            color: #647f96;
+            line-height: 1.6;
+        }
+
+        .prescription-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 22px;
+            border: 1px solid #dcebf4;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px rgba(35, 90, 120, 0.06);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e5edf2;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            color: #087e83;
+            font-size: 21px;
+            overflow-wrap: anywhere;
+        }
+
+        .badge {
+            background: #e5f6f7;
+            color: #087e83;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .detail-label {
+            display: block;
+            color: #647f96;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .detail-value {
+            color: #263746;
+            font-size: 15px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .follow-up {
+            margin-top: 22px;
+            padding: 14px;
+            background: #f0f9fa;
+            border-radius: 9px;
+        }
+
+        .follow-up .detail-value {
+            color: #087e83;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            background: white;
+            text-align: center;
+            padding: 45px 20px;
+            border-radius: 14px;
+            color: #647f96;
+        }
+
+        .empty-state h2 {
+            color: #164e70;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #087e83;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            color: #647f96;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                padding: 16px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 12px 16px;
+            }
+
+            .nav-links a {
+                font-size: 14px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 30px auto;
+            }
+
+            .page-heading h1 {
+                font-size: 27px;
+            }
+
+            .prescription-card {
+                padding: 20px;
+            }
+
+            .card-header h2 {
+                font-size: 19px;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="{% url 'home' %}" class="logo">+ Hospital Care</a>
+
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'category_list' %}">Departments</a>
+            <a href="{% url 'doctor_list' %}">Doctors</a>
+            <a href="{% url 'patient_logout' %}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="page-heading">
+            <h1>My Prescriptions</h1>
+            <p>View your prescribed medicines, dosage instructions, and follow-up dates.</p>
+        </div>
+
+        {% for prescription in prescriptions %}
+            <div class="prescription-card">
+
+                <div class="card-header">
+                    <h2>{{ prescription.medicine }}</h2>
+                    <span class="badge">Prescription</span>
+                </div>
+
+                <div class="details">
+                    <div>
+                        <span class="detail-label">Dosage</span>
+                        <p class="detail-value">{{ prescription.dosage|default:"Not specified" }}</p>
+                    </div>
+
+                    <div>
+                        <span class="detail-label">Instructions / Notes</span>
+                        <p class="detail-value">{{ prescription.notes|default:"No instructions provided" }}</p>
+                    </div>
+                </div>
+
+                <div class="follow-up">
+                    <span class="detail-label">Follow-up Date</span>
+                    <p class="detail-value">
+                        {% if prescription.follow_up_date %}
+                            {{ prescription.follow_up_date|date:"M. j, Y" }}
+                        {% else %}
+                            Not scheduled
+                        {% endif %}
+                    </p>
+                </div>
+
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <h2>No Prescriptions Yet</h2>
+                <p>Your prescriptions will appear here when they are available.</p>
+                <a href="{% url 'home' %}" class="back-link">Back to Home</a>
+            </div>
+        {% endfor %}
+    </main>
+
+    <footer>
+        Your Health &nbsp; • &nbsp; Our Priority
+    </footer>
+
 </body>
 </html>

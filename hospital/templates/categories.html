@@ -1,109 +1,203 @@
 
-{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Medical Categories</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departments | Hospital</title>
 
     <style>
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             font-family: Arial, sans-serif;
-            background: #eef6fc;
-            color: #123456;
+            background: #f4f8fc;
+            color: #183153;
+            line-height: 1.6;
         }
 
         nav {
             background: white;
-            padding: 20px 6%;
+            padding: 18px 7%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px #ddd;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 2px 12px rgba(20, 65, 110, 0.08);
         }
 
-        nav h2 {
-            color: #087e83;
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        nav a {
+        .nav-links a {
+            color: #344a63;
             text-decoration: none;
-            color: #123456;
-            margin-left: 20px;
+            font-size: 14px;
+            font-weight: bold;
         }
 
-        nav a:hover {
-            color: #087e83;
+        .nav-links a:hover {
+            color: #1266d4;
         }
 
-        .heading {
+        .header {
             text-align: center;
-            padding: 30px 15px;
+            padding: 50px 20px;
+            background: linear-gradient(120deg, #e5f1ff, #ffffff);
         }
 
-        .heading h1 {
-            color: #087e83;
+        .header span {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #d9eaff;
+            color: #1266d4;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: clamp(28px, 4vw, 40px);
+            color: #16365c;
             margin-bottom: 10px;
         }
 
-        .heading p {
-            color: #666;
+        .header p {
+            color: #62748a;
         }
 
-        .category-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            padding: 20px;
+        .container {
+            max-width: 1150px;
+            margin: auto;
+            padding: 40px 25px 60px;
+        }
+
+        .section-title {
+            margin-bottom: 25px;
+        }
+
+        .section-title h2 {
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .section-title p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
         }
 
         .category-card {
-            width: 250px;
             background: white;
-            padding: 25px;
+            border: 1px solid #e3edf8;
+            border-radius: 15px;
+            padding: 26px;
+            box-shadow: 0 5px 18px rgba(20, 65, 110, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(20, 65, 110, 0.1);
+        }
+
+        .icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e8f3ff;
             border-radius: 12px;
-            box-shadow: 0 2px 8px #ddd;
+            font-size: 28px;
+            margin-bottom: 18px;
         }
 
-        .category-card h2 {
-            margin-top: 0;
-        }
-
-        .category-card a {
-            color: #087e83;
-            text-decoration: none;
-        }
-
-        .category-card a:hover {
-            text-decoration: underline;
+        .category-card h3 {
+            color: #16365c;
+            font-size: 20px;
+            margin-bottom: 10px;
         }
 
         .category-card p {
-            color: #666;
-            line-height: 1.6;
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 20px;
+            overflow-wrap: anywhere;
+        }
+
+        .button {
+            display: inline-block;
+            background: #1266d4;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #0c4fa9;
+        }
+
+        .empty-state {
+            background: white;
+            border: 1px solid #e3edf8;
+            border-radius: 14px;
+            padding: 30px;
+            text-align: center;
+            color: #62748a;
         }
 
         footer {
+            background: #16365c;
+            color: #d9e5f3;
             text-align: center;
-            padding: 20px;
-            color: #666;
+            padding: 22px;
+            font-size: 13px;
         }
 
-        @media (max-width: 700px) {
+        @media (max-width: 850px) {
+            .category-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 580px) {
             nav {
-                flex-direction: column;
-                gap: 15px;
+                padding: 16px 5%;
             }
 
-            nav a {
-                display: inline-block;
-                margin: 8px;
+            .nav-links {
+                gap: 12px;
             }
 
-            .category-card {
-                width: 100%;
-                max-width: 300px;
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 30px 16px 40px;
+            }
+
+            .header {
+                padding: 40px 18px;
             }
         }
     </style>
@@ -112,49 +206,58 @@
 <body>
 
     <nav>
-        <h2>Hospital Care</h2>
-
-        <div>
+        <div class="nav-links">
             <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'doctor_list' %}">Doctors</a>
             <a href="{% url 'category_list' %}">Departments</a>
+            <a href="{% url 'doctor_list' %}">Doctors</a>
             <a href="{% url 'patient_login' %}">Patient Login</a>
         </div>
     </nav>
 
-    <div class="heading">
-        <h1>Our Medical Departments</h1>
-        <p>Choose a department to find the right doctor for you.</p>
-    </div>
+    <header class="header">
+        <span>OUR SPECIALITIES</span>
+        <h1>Medical Departments</h1>
+        <p>Explore our departments and find the right specialist for your care.</p>
+    </header>
 
-    <div class="category-list">
+    <main class="container">
+        <div class="section-title">
+            <h2>Explore Departments</h2>
+            <p>Select a department to view its doctors.</p>
+        </div>
 
-        {% for category in categories %}
-            <div class="category-card">
+        {% if categories %}
+            <div class="category-grid">
+                {% for category in categories %}
+                    <article class="category-card">
+                        <div class="icon">✚</div>
 
-                <h2>
-                    <a href="{% url 'category_doctors' category.id %}">
-                        {{ category.name }}
-                    </a>
-                </h2>
+                        <h3>{{ category.name }}</h3>
 
-                <p>{{ category.description }}</p>
+                        <p>
+                            {{ category.description|default:"Explore doctors and services in this department." }}
+                        </p>
 
-                <a href="{% url 'category_doctors' category.id %}">
-                    View Doctors &rarr;
-                </a>
-
+                        <a
+                            href="{% url 'category_doctors' category.id %}"
+                            class="button"
+                        >
+                            View Doctors →
+                        </a>
+                    </article>
+                {% endfor %}
             </div>
-        {% empty %}
-            <p>No categories available.</p>
-        {% endfor %}
-
-    </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>No departments available</h3>
+                <p>Please check back later.</p>
+            </div>
+        {% endif %}
+    </main>
 
     <footer>
-        <p>Hospital Management System</p>
+        <p>© 2026 Hospital. All rights reserved.</p>
     </footer>
 
 </body>
 </html>
-```
