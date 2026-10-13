@@ -21,4 +21,5 @@ urlpatterns = [
 
     path("patient/login/", views.patient_login, name="patient_login"),
     path("patient/verify-otp/", views.verify_otp, name="verify_otp"),
+    path("doctor/login/", views.doctor_login, name="doctor_login"),
 ]
